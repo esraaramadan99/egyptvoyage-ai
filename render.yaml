@@ -1,0 +1,24 @@
+# Render Blueprint – Grade Prediction API
+# See: https://render.com/docs/blueprint-spec
+# After connecting the repo, override "Start Command" in Dashboard if needed.
+
+services:
+  - type: web
+    name: egyptvoyage-ai
+    runtime: python
+    plan: free
+
+    # Build: install dependencies from project root
+    buildCommand: pip install -r requirements.txt
+
+    # Single worker: free tier (512MB) OOMs if gunicorn spawns multiple workers
+    # (each loads sklearn + pandas). Timeout helps cold starts.
+    startCommand: gunicorn --workers 1 --timeout 120 --bind 0.0.0.0:$PORT api.app:app
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: LOG_LEVEL
+        value: INFO
+      - key: ALLOW_CORS
+        value: "*"
