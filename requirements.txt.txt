@@ -5,3 +5,5 @@ scikit-learn
 xgboost
 gunicorn>=21.0
 pymongo[srv]
+pandas
+numpy
